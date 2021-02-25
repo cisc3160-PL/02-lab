@@ -14,6 +14,8 @@ a newline, are passed on as their own tokens. Based on the zcalc
 calculator by ruiz@capsl.udel.edu
 ************************************************************************/
 
+int yylex();
+
 %}
 
 D     [0-9]

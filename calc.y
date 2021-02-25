@@ -16,6 +16,8 @@
 * associativity rules. Based on zcalc by ruiz@capsl.udel.edu
 ************************************************************************/
 
+int yylex();
+
 %}
  
 /*
@@ -144,7 +146,7 @@ void yyerror(char *msg)	/* yacc error function */
   printf("%s \n" , msg);  
 }
 
-main()
+int main()
 { /* print herald and call parser */
   printf("331 Calculator\n(type ? for help and . to exit)\n\n>> ");
   yyparse();
