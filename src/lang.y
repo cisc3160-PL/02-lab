@@ -34,7 +34,7 @@ session
 
 toplevel
     : num_expression                    { printf("%g\n\n>> ", $1); }
-    | '.'                               { printf("Exiting...\n"); exit(1); }                               
+    | '.'                               { printf("Exiting...\n"); exit(1); }
     ;
 
 num_expression
@@ -56,7 +56,7 @@ struct symtab *symlook(char *s)
     struct symtab *sp;
 
     /*
-        Given the name of a symbol, scan the symbol table and 
+        Given the name of a symbol, scan the symbol table and
         either return the entry with matching name or add it
         to the next free cell in the symbol table
     */
