@@ -1,13 +1,11 @@
-kuiper: yacc lex
-	gcc lex.yy.c y.tab.c -o kuiper
+TARGET = bin/kuiper
 
-yacc: lang.y
-	# -d will generate y.tab.h for lexer to use
-	yacc -d lang.y
+TESTS = $(wildcard examples/*.kupr)
 
-lex: lang.l
-	# Generate lex.yy.c
-	lex lang.l
+.PHONY: all test clean
 
-clean:
-	rm kuiper lex.yy.c y.tab.*
+all clean:
+	$(MAKE) -C src $@
+
+test: all
+	$(TARGET) -c $(TESTS)

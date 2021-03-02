@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "symtab.h"
+#include "lex.yy.c"
 
-void yyerror(char *s);
-int yylex();
+extern void yyerror(char *s);
+extern int yylex();
 
 %}
 
