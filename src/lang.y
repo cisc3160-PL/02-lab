@@ -15,8 +15,12 @@ extern int yylex();
     struct symtab *symp;
 }
 
-%token <symp> IDENTIFIER
-%token <fval> NUMBER
+%token
+    keyword_print
+    keyword_println
+
+%token <symp> tIDENTIFIER
+%token <fval> tNUMBER
 
 /* Precedence */
 %right '='
@@ -37,9 +41,9 @@ toplevel
     ;
 
 num_expr
-    : NUMBER                        { $$ = $1; }
-    | IDENTIFIER                    { $$ = $1->value; }
-    | IDENTIFIER '=' num_expr       { $1->value = $3; $$ = $3; }
+    : tNUMBER                       { $$ = $1; }
+    | tIDENTIFIER                   { $$ = $1->value; }
+    | tIDENTIFIER '=' num_expr      { $1->value = $3; $$ = $3; }
     | num_expr '+' num_expr         { $$ = $1 + $3; }
     | num_expr '-' num_expr         { $$ = $1 - $3; }
     | num_expr '*' num_expr         { $$ = $1 * $3; }

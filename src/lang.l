@@ -17,6 +17,9 @@ extern int yylex();
 
 %%
 
+"print"     { return keyword_print; }
+"println"   { return keyword_println; }
+
 {A}({A}|{D})* {
     struct symtab *sp = symlook(yytext);
     yylval.symp = sp;
