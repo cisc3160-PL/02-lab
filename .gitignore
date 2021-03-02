@@ -53,5 +53,5 @@ dkms.conf
 
 # Kuiper (lex & yacc)
 Kuiper
-lex.yy.c
+lex.yy.*
 y.tab.*

@@ -10,8 +10,8 @@ E   [Ee][-+]?{D}+
 #include "y.tab.h"
 #include "symtab.h"
 
-void yyerror(char *s);
-int yylex();
+extern void yyerror(char *s);
+extern int yylex();
 
 %}
 
