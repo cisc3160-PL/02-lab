@@ -23,7 +23,7 @@ extern int yylex();
 %left '+' '-'
 %left '*' '/'
 
-%type <fval> num_expression
+%type <fval> num_expr
 
 %%
 
@@ -33,19 +33,18 @@ session
     ;
 
 toplevel
-    : num_expression                    { printf("%g\n\n>> ", $1); }
-    | '.'                               { printf("Exiting...\n"); exit(1); }
+    : num_expr                      { printf("%g\n\n>> ", $1); }
     ;
 
-num_expression
-    : NUMBER                            { $$ = $1; }
-    | IDENTIFIER                        { $$ = $1->value; }
-    | IDENTIFIER '=' num_expression     { $1->value = $3; $$ = $3; }
-    | num_expression '+' num_expression { $$ = $1 + $3; }
-    | num_expression '-' num_expression { $$ = $1 - $3; }
-    | num_expression '*' num_expression { $$ = $1 * $3; }
-    | num_expression '/' num_expression { $$ = $1 / $3; }
-    | '(' num_expression ')'            { $$ = $2; }
+num_expr
+    : NUMBER                        { $$ = $1; }
+    | IDENTIFIER                    { $$ = $1->value; }
+    | IDENTIFIER '=' num_expr       { $1->value = $3; $$ = $3; }
+    | num_expr '+' num_expr         { $$ = $1 + $3; }
+    | num_expr '-' num_expr         { $$ = $1 - $3; }
+    | num_expr '*' num_expr         { $$ = $1 * $3; }
+    | num_expr '/' num_expr         { $$ = $1 / $3; }
+    | '(' num_expr ')'              { $$ = $2; }
     ;
 
 %%
@@ -90,7 +89,7 @@ struct symtab *symlook(char *s)
 
 int main()
 {
-    printf("Basic calculator (type . to exit)\nSupports +, -, *, /, () and variable assignment\n\n>> ");
+    printf("Basic calculator\nSupports +, -, *, /, () and variable assignment\n\n>> ");
     return yyparse();
 }
 
