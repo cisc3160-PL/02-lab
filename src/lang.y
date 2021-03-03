@@ -12,6 +12,7 @@ extern int yylex();
 
 %union {
     float fval;
+    char *strval;
     struct symtab *symp;
 }
 
@@ -21,6 +22,7 @@ extern int yylex();
 
 %token <symp> tIDENTIFIER
 %token <fval> tNUMBER
+%token <strval> tSTRING
 
 /* Precedence */
 %right '='
@@ -28,16 +30,20 @@ extern int yylex();
 %left '*' '/'
 
 %type <fval> num_expr
+%type <strval> io_expr
+
+%start parser
 
 %%
 
-session
-    : /* empty */
-    | session toplevel '\n'
+parser
+    : io_expr
+    | num_expr                      { printf("%g\n", $1); }
     ;
 
-toplevel
-    : num_expr                      { printf("%g\n\n>> ", $1); }
+io_expr
+    : keyword_print tSTRING         { printf("%s", $2); }
+    | keyword_println tSTRING       { printf("%s\n", $2); }
     ;
 
 num_expr
@@ -93,7 +99,6 @@ struct symtab *symlook(char *s)
 
 int main()
 {
-    printf("Basic calculator\nSupports +, -, *, /, () and variable assignment\n\n>> ");
     return yyparse();
 }
 
