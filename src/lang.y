@@ -12,40 +12,49 @@ extern int yylex();
 
 %union {
     float fval;
+    char *strval;
     struct symtab *symp;
 }
 
-%token <symp> IDENTIFIER
-%token <fval> NUMBER
+%token
+    keyword_print
+    keyword_println
+
+%token <symp> tIDENTIFIER
+%token <fval> tNUMBER
+%token <strval> tSTRING
 
 /* Precedence */
 %right '='
 %left '+' '-'
 %left '*' '/'
 
-%type <fval> num_expression
+%type <fval> num_expr
+%type <strval> io_expr
+
+%start parser
 
 %%
 
-session
-    : /* empty */
-    | session toplevel '\n'
+parser
+    : io_expr
+    | num_expr                      { printf("%g\n", $1); }
     ;
 
-toplevel
-    : num_expression                    { printf("%g\n\n>> ", $1); }
-    | '.'                               { printf("Exiting...\n"); exit(1); }                               
+io_expr
+    : keyword_print tSTRING         { printf("%s", $2); }
+    | keyword_println tSTRING       { printf("%s\n", $2); }
     ;
 
-num_expression
-    : NUMBER                            { $$ = $1; }
-    | IDENTIFIER                        { $$ = $1->value; }
-    | IDENTIFIER '=' num_expression     { $1->value = $3; $$ = $3; }
-    | num_expression '+' num_expression { $$ = $1 + $3; }
-    | num_expression '-' num_expression { $$ = $1 - $3; }
-    | num_expression '*' num_expression { $$ = $1 * $3; }
-    | num_expression '/' num_expression { $$ = $1 / $3; }
-    | '(' num_expression ')'            { $$ = $2; }
+num_expr
+    : tNUMBER                       { $$ = $1; }
+    | tIDENTIFIER                   { $$ = $1->value; }
+    | tIDENTIFIER '=' num_expr      { $1->value = $3; $$ = $3; }
+    | num_expr '+' num_expr         { $$ = $1 + $3; }
+    | num_expr '-' num_expr         { $$ = $1 - $3; }
+    | num_expr '*' num_expr         { $$ = $1 * $3; }
+    | num_expr '/' num_expr         { $$ = $1 / $3; }
+    | '(' num_expr ')'              { $$ = $2; }
     ;
 
 %%
@@ -56,7 +65,7 @@ struct symtab *symlook(char *s)
     struct symtab *sp;
 
     /*
-        Given the name of a symbol, scan the symbol table and 
+        Given the name of a symbol, scan the symbol table and
         either return the entry with matching name or add it
         to the next free cell in the symbol table
     */
@@ -90,7 +99,6 @@ struct symtab *symlook(char *s)
 
 int main()
 {
-    printf("Basic calculator (type . to exit)\nSupports +, -, *, /, () and variable assignment\n\n>> ");
     return yyparse();
 }
 

@@ -17,15 +17,23 @@ extern int yylex();
 
 %%
 
+"print"     { return keyword_print; }
+"println"   { return keyword_println; }
+
+\"(\\.|[^"\\])*\" {
+    yylval.strval = yytext;
+    return tSTRING;
+} /* String */
+
 {A}({A}|{D})* {
     struct symtab *sp = symlook(yytext);
     yylval.symp = sp;
-    return IDENTIFIER;
+    return tIDENTIFIER;
 } /* Could be variable or function (_prvFunc, pubFunc) */
 
 ({D}+|({D}*\.{D}+)({E})?) {
     yylval.fval = atof(yytext);
-    return NUMBER;
+    return tNUMBER;
 } /* Integers or floating point */
 
 "=" { return '='; }
@@ -35,10 +43,8 @@ extern int yylex();
 "*" { return '*'; }
 "/" { return '/'; }
 
-[ \t]       ;                       /* Ignore tabs and spaces */
-
-\n          |
-.           { return yytext[0]; }   /* Return nextline and everything else as tokens */
+[ \t\n]     |       /* Ignore tabs, newlines and spaces */
+.           ;       /* Ignore everything else */
 
 %%
 
