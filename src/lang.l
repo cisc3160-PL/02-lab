@@ -21,6 +21,8 @@ extern int yylex();
 "println"   { return keyword_println; }
 
 \"(\\.|[^"\\])*\" {
+    yytext++; // Remove beginning quote
+    yytext[strlen(yytext) - 1] = 0; // Remove end quote
     yylval.strval = yytext;
     return tSTRING;
 } /* String */
