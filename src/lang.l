@@ -46,6 +46,7 @@ newline     \n
 "("             { return '('; }
 ")"             { return ')'; }
 "+"             { return '+'; }
+"-"             { return '-'; }
 "*"             { return '*'; }
 "/"             { return '/'; }
 
