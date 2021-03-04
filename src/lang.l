@@ -1,3 +1,14 @@
+%{
+
+#include "y.tab.h"
+#include "symtab.h"
+
+extern int yylex();
+
+void invalidToken();
+
+%}
+
 /* Digits */
 D   [0-9]
 /* Alphabet w/ underscore */
@@ -5,20 +16,13 @@ A   [a-zA-Z_]
 /* Exponents */
 E   [Ee][-+]?{D}+
 
-%{
-
-#include "y.tab.h"
-#include "symtab.h"
-
-extern void yyerror(char *s);
-extern int yylex();
-
-%}
+whitespace  [ \t\r\v\f]
+newline     \n
 
 %%
 
-"print"     { return keyword_print; }
-"println"   { return keyword_println; }
+"print"         { return keyword_print; }
+"println"       { return keyword_println; }
 
 \"(\\.|[^"\\])*\" {
     yytext++; // Remove beginning quote
@@ -38,19 +42,26 @@ extern int yylex();
     return tNUMBER;
 } /* Integers or floating point */
 
-"=" { return '='; }
-"(" { return '('; }
-")" { return ')'; }
-"+" { return '+'; }
-"*" { return '*'; }
-"/" { return '/'; }
+"="             { return '='; }
+"("             { return '('; }
+")"             { return ')'; }
+"+"             { return '+'; }
+"*"             { return '*'; }
+"/"             { return '/'; }
 
-[ \t\n]     |       /* Ignore tabs, newlines and spaces */
-.           ;       /* Ignore everything else */
+{newline}       { yylineno++; return '\n'; }
+{whitespace}    ;
+.               { invalidToken(); }
 
 %%
 
 int yywrap()
 {
     return 1;
+}
+
+void invalidToken()
+{
+    printf("Error on line %d:\n Invalid token %s\n", yylineno, yytext);
+    exit(0);
 }
