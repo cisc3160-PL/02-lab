@@ -5,10 +5,15 @@
 #include <string.h>
 #include "lex.yy.c"
 
-extern void yyerror(char *s);
+extern void yyerror(const char *s);
 extern int yylex();
+extern char *yytext;
+extern int yylineno;
 
 %}
+
+%define parse.lac full
+%define parse.error verbose
 
 %union {
     float fval;
@@ -32,11 +37,22 @@ extern int yylex();
 %type <fval> num_expr
 %type <strval> io_expr
 
-%start parser
+%start lines
 
 %%
 
-parser
+lines
+    : line
+    | lines line
+    ;
+
+line
+    : '\n'
+    | expr
+    | error '\n'                    { yyerrok; }
+    ;
+
+expr
     : io_expr
     | num_expr                      { printf("%g\n", $1); }
     ;
@@ -102,7 +118,8 @@ int main()
     return yyparse();
 }
 
-void yyerror(char *s)
+void yyerror(const char *s)
 {
-    printf("%s\n", s);
+    fprintf(stderr, "\nError on line %d:\n %s\n", yylineno, s);
+    exit(0);
 }
