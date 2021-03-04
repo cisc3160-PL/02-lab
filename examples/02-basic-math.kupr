@@ -1,0 +1,19 @@
+sum = 5 + 4 + 3
+diff = 5 - 4 - 3
+prod = 5 * 4 * 3
+quot = 5 / 4 / 3
+mix1 = 10 * ((4 - 5) / (4 + 3))
+mix2 = 10 * 4 - 5 / 4 + 3
+
+print "5 + 4 + 3 = "
+println sum
+print "5 - 4 - 3 = "
+println diff
+print "5 * 4 * 3 = "
+println prod
+print "5 / 4 / 3 = "
+println quot
+print "10 * ((4 - 5) / (4 + 3)) = "
+println mix1
+print "10 * 4 - 5 / 4 + 3 = "
+println mix2

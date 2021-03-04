@@ -54,12 +54,14 @@ line
 
 expr
     : io_expr
-    | num_expr                      { printf("%g\n", $1); }
+    | num_expr
     ;
 
 io_expr
     : keyword_print tSTRING         { printf("%s", $2); }
     | keyword_println tSTRING       { printf("%s\n", $2); }
+    | keyword_print num_expr        { printf("%g", $2); }
+    | keyword_println num_expr      { printf("%g\n", $2); }
     ;
 
 num_expr
