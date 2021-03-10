@@ -24,6 +24,10 @@ extern int yylineno;
 %token
     keyword_print
     keyword_println
+    op_le
+    op_ge
+    op_eq
+    op_neq
 
 %token <symp> tIDENTIFIER
 %token <fval> tNUMBER
@@ -31,6 +35,8 @@ extern int yylineno;
 
 /* Precedence */
 %right '='
+%nonassoc op_eq op_neq
+%left '<' '>' op_le op_ge
 %left '+' '-'
 %left '*' '/'
 
@@ -73,6 +79,12 @@ num_expr
     | num_expr '*' num_expr         { $$ = $1 * $3; }
     | num_expr '/' num_expr         { $$ = $1 / $3; }
     | '(' num_expr ')'              { $$ = $2; }
+    | num_expr '<' num_expr         { $$ = ($1 < $3) ? 1 : 0; }
+    | num_expr '>' num_expr         { $$ = ($1 > $3) ? 1 : 0; }
+    | num_expr op_le num_expr       { $$ = ($1 <= $3) ? 1 : 0; }
+    | num_expr op_ge num_expr       { $$ = ($1 >= $3) ? 1 : 0; }
+    | num_expr op_eq num_expr       { $$ = ($1 == $3) ? 1 : 0; }
+    | num_expr op_neq num_expr      { $$ = ($1 != $3) ? 1 : 0; }
     ;
 
 %%
