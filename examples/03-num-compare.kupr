@@ -1,0 +1,25 @@
+a = 10
+b = 4
+c = 6
+
+aLTb = a < b
+bGTc = b > c
+cLTEa = c <= a
+aGTEc = a >= c
+bEQ4 = b == 4
+cNEQ6 = c != 6
+
+println "1 for true, 0 for false"
+println ""
+print "Is 10 less than 4: "
+println aLTb
+print "Is 4 greater than 6: "
+println bGTc
+print "Is 6 less than or equal to 10: "
+println cLTEa
+print "Is 10 greater than or equal to 6: "
+println aGTEc
+print "Is 4 equal to 4: "
+println bEQ4
+print "Is 6 not equal to 6: "
+println cNEQ6

@@ -49,6 +49,12 @@ newline     \n
 "-"             { return '-'; }
 "*"             { return '*'; }
 "/"             { return '/'; }
+"<"             { return '<'; }
+">"             { return '>'; }
+"<="            { return op_le; }
+">="            { return op_ge; }
+"=="            { return op_eq; }
+"!="            { return op_neq; }
 
 {newline}       { yylineno++; return '\n'; }
 {whitespace}    ;
